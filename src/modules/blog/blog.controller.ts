@@ -1,8 +1,8 @@
+import { ClassMiddleware, Controller, Delete, Get, Post } from "@overnightjs/core";
 import { NextFunction, Request, Response } from "express";
-import { Controller, Delete, Get, Post } from "@overnightjs/core";
 import { BlogIdDto, CreateBlogDto } from "./blog.dto";
+import { AuthMiddleware } from "../../middleware/auth.middleware";
 import { plainToClass } from "class-transformer";
-import { validateSync } from "class-validator";
 import { errorHandler } from "../../utils/ApiErrorHandler";
 import { BlogService } from "./blog.service";
 import { TFindDoc } from "../../types/public.types";
@@ -10,6 +10,7 @@ import { IBlog } from "../../types/blog.types";
 
 
 @Controller("blog")
+@ClassMiddleware(AuthMiddleware)
 export class BlogController {
   private blogService: BlogService = new BlogService()
   @Post()
