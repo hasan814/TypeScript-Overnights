@@ -12,7 +12,7 @@ export type ResponseMethod = {
 }
 
 
-export interface jwtGeneratorPayloadDTO {
+export interface jwtToken {
   id: ObjectId,
   username: IUser['username']
 }

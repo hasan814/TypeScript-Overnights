@@ -32,3 +32,16 @@ export class RegisterDTO {
   @Expose()
   avatar?: string;
 }
+
+
+export class LoginDTO {
+  @IsDefined()
+  @Matches(/^[a-zA-Z0-9_]{3,20}$/, { message: "Username must be 3-20 characters and contain only letters, numbers, and underscores" })
+  @Expose()
+  username: string;
+
+  @IsDefined()
+  @Matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{6,20}$/, { message: "Password must be 6-20 characters, including at least one letter and one number" })
+  @Expose()
+  password: string;
+}
