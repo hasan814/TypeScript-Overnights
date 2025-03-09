@@ -13,3 +13,12 @@ export const NotFoundErrorHandler = (req: Request, res: Response, next: NextFunc
   const message: string = "InternalServerError"
   res.status(errorCode).json({ status: errorCode, message })
 }
+
+
+export const errorHandler = (errors: any[]) => {
+  let errorTexts: string[] = []
+  for (const errorItem of errors) {
+    errorTexts = errorTexts.concat(errorItem.constraints)
+  }
+  return errorTexts
+}

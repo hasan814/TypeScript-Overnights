@@ -1,9 +1,14 @@
 import { ApiErrorHandler, NotFoundErrorHandler } from './utils/ApiErrorHandler'
+import { BlogController } from './modules/blog/blog.controller'
+import { AuthController } from './modules/auth/auth.controller'
 import { Server } from '@overnightjs/core'
 
+import connectDB from './utils/connectDB'
 import express from 'express'
 import cors from 'cors'
+
 import * as http from 'http'
+
 
 export class SetupServer extends Server {
   private server?: http.Server
@@ -12,6 +17,7 @@ export class SetupServer extends Server {
   }
   public init(): void {
     this.setupExpress()
+    this.setupControllers()
     this.setupErrorHandler()
   }
   private setupExpress(): void {
@@ -23,10 +29,19 @@ export class SetupServer extends Server {
     this.app.use(NotFoundErrorHandler)
     this.app.use(ApiErrorHandler)
   }
-  public start(): void {
-    this.server = http.createServer(this.app)
-    this.server.listen(this.port, () => {
-      console.log(`Server run on Port: http:localhost${this.port}`)
-    })
+  private setupControllers() {
+    const controllers = [new BlogController(), new AuthController()]
+    super.addControllers(controllers)
+  }
+  public async start(): Promise<void> {
+    try {
+      await connectDB();
+      this.server = http.createServer(this.app);
+      this.server.listen(this.port, () => {
+        console.log(`Server running on http://localhost:${this.port}`);
+      });
+    } catch (error) {
+      console.error("Failed to start the server:", error);
+    }
   }
 }
