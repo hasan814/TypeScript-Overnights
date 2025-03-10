@@ -1,7 +1,7 @@
 
 import { NextFunction, Request, Response } from "express";
-import { HttpError } from "../types/public.types";
 import { validateSync, ValidationError } from "class-validator";
+import { HttpError } from "../types/public.types";
 
 export const ApiErrorHandler = (error: HttpError, req: Request, res: Response, next: NextFunction) => {
   const errorCode: number = error?.status || 500
